@@ -1,0 +1,7 @@
+flask
+requests
+groq
+PyPDF2
+pdf2image
+pytesseract
+pillow
