@@ -3,285 +3,422 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#1E5631">
+  <meta name="theme-color" content="#03C75A">
   <link rel="manifest" href="/static/manifest.json">
   <title>드림캐쳐스 리뷰 이벤트</title>
   <style>
     :root {
-      --green:      #1E5631;
-      --green-dark: #2D5A3D;
-      --gray:       #404040;
-      --gray-mid:   #888888;
-      --gray-light: #D1D5DB;
-      --green-light:#D6EAD8;
-      --white:      #FFFFFF;
+      --naver:      #03C75A;
+      --naver-dark: #02a34a;
+      --naver-bg:   #f0fdf6;
+      --naver-border: #b7f0d0;
+      --gray-1:     #1a1a1a;
+      --gray-2:     #444;
+      --gray-3:     #888;
+      --gray-4:     #bbb;
+      --gray-5:     #eee;
+      --gray-6:     #f5f6f8;
+      --white:      #ffffff;
+      --red:        #e53e3e;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
     html, body {
       height: 100%;
-      font-family: -apple-system, 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', -apple-system, sans-serif;
       background: var(--white);
       overflow: hidden;
-      color: var(--gray);
+      color: var(--gray-1);
     }
 
-    /* ── Screens ── */
     .screen { display: none; flex-direction: column; height: 100vh; }
     .screen.active { display: flex; }
-
-    /* ── Shared header ── */
-    .header {
-      background: var(--green-dark);
-      padding: 18px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-shrink: 0;
-    }
-    .header-title { color: var(--white); font-size: 18px; font-weight: 700; letter-spacing: 1px; }
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.45);
-      color: rgba(255,255,255,0.85);
-      padding: 7px 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    /* ── Buttons ── */
-    .btn-primary {
-      background: var(--green);
-      color: var(--white);
-      border: none;
-      border-radius: 14px;
-      padding: 0 32px;
-      height: 80px;
-      font-size: 26px;
-      font-weight: 700;
-      cursor: pointer;
-      width: 100%;
-      max-width: 420px;
-      transition: opacity .15s, transform .1s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .btn-primary:active { opacity: .85; transform: scale(.97); }
-    .btn-primary.inactive {
-      background: var(--gray-light);
-      color: var(--gray-mid);
-      cursor: default;
-    }
 
     /* ══════════════════════════════════════
        SCREEN 1 — 시작
     ══════════════════════════════════════ */
-    #s-start .body {
-      flex: 1;
+    #s-start {
+      background: #c8e8f8;
+      position: relative;
+    }
+    #s-start .bg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 65%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    #s-start .start-card {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--white);
+      border-radius: 24px 24px 0 0;
+      box-shadow: 0 -4px 28px rgba(0,0,0,0.10);
+      padding: 24px 24px 40px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 28px;
-      padding: 24px 20px;
+      gap: 14px;
     }
-    .start-headline {
-      font-size: 30px;
-      font-weight: 800;
-      text-align: center;
-      line-height: 1.45;
-      color: var(--gray);
+    .start-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--gray-5);
+      border-radius: 2px;
+      margin-bottom: 4px;
     }
-    .start-headline em { color: var(--green); font-style: normal; }
-
-    .drink-wrap {
-      width: 180px;
-      height: 210px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    /* SVG can image — replace <img> here with actual product image */
-    .can-svg { width: 100%; height: 100%; }
-
-    .daily-note {
-      font-size: 16px;
-      color: var(--gray-mid);
-    }
-    .quota-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-    }
-    .quota-bar-bg {
-      width: 260px;
-      height: 12px;
-      background: var(--gray-light);
-      border-radius: 6px;
-      overflow: hidden;
-    }
-    .quota-bar-fill {
-      height: 100%;
-      background: var(--green);
-      border-radius: 6px;
-      transition: width .4s;
-    }
-    .quota-txt {
-      font-size: 15px;
-      color: var(--gray-mid);
-    }
-    .quota-txt strong { color: var(--green); }
-    .sold-out-msg {
-      font-size: 22px;
+    .start-title {
+      font-size: 17px;
       font-weight: 700;
-      color: var(--green-dark);
+      color: var(--gray-1);
       text-align: center;
-      line-height: 1.6;
+      letter-spacing: -0.3px;
+    }
+    .start-sub {
+      font-size: 13px;
+      color: var(--gray-3);
+      text-align: center;
+    }
+    .btn-naver {
+      width: 100%;
+      height: 62px;
+      background: var(--naver);
+      border: none;
+      border-radius: 14px;
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--white);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      letter-spacing: -0.3px;
+      transition: background .15s, transform .1s;
+    }
+    .btn-naver:active { background: var(--naver-dark); transform: scale(.97); }
+    .btn-naver svg { flex-shrink: 0; }
+    .start-note {
+      font-size: 12px;
+      color: var(--gray-4);
+      text-align: center;
     }
 
     /* ══════════════════════════════════════
        SCREEN 2 — 입력
     ══════════════════════════════════════ */
-    #s-input .body {
+    #s-input {
+      background: var(--gray-6);
+    }
+    .inp-header {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-5);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .inp-header-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--naver);
+    }
+    .inp-header-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gray-1);
+    }
+    .inp-header-sub {
+      font-size: 12px;
+      color: var(--gray-3);
+      margin-left: auto;
+    }
+
+    .inp-body {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 24px 20px 16px;
-      gap: 18px;
       overflow-y: auto;
-    }
-    .input-hint {
-      width: 100%;
-      max-width: 420px;
-      font-size: 19px;
-      font-weight: 600;
-      color: var(--gray);
-    }
-    .field {
-      width: 100%;
-      max-width: 420px;
+      padding: 16px 16px 20px;
       display: flex;
       flex-direction: column;
-      gap: 7px;
+      gap: 12px;
     }
-    .field-label {
-      font-size: 17px;
-      font-weight: 600;
-      color: var(--gray);
+
+    /* 카드 공통 */
+    .inp-card {
+      background: var(--white);
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--gray-5);
+    }
+    .card-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray-3);
+      letter-spacing: 0.3px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    .card-label .req {
+      color: var(--red);
+      margin-left: 4px;
+    }
+
+    /* 네이버 아이디 카드 */
+    #card-naver { border: 1.5px solid var(--gray-5); transition: border-color .2s; }
+    #card-naver.focused { border-color: var(--naver); }
+    .naver-input-row {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 0;
     }
-    .field-label .tag {
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--gray-mid);
-    }
-    .field-input {
-      border: 2px solid var(--gray-light);
-      border-radius: 12px;
-      padding: 15px 16px;
-      font-size: 22px;
-      color: var(--gray);
+    .naver-input-row input {
+      flex: 1;
+      border: none;
       outline: none;
-      width: 100%;
-      transition: border-color .2s;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--gray-1);
+      background: transparent;
+      padding: 0;
+      min-width: 0;
+    }
+    .naver-input-row input::placeholder { color: var(--gray-4); font-size: 16px; font-weight: 400; }
+    .naver-suffix {
+      font-size: 15px;
+      color: var(--gray-3);
+      flex-shrink: 0;
+      padding-left: 2px;
+    }
+
+    /* 위치 카드 */
+    .location-grid {
+      display: flex;
+      gap: 10px;
+      align-items: stretch;
+    }
+    .loc-option {
+      flex: 1;
+      border: 1.5px solid var(--gray-5);
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      transition: border-color .2s, background .2s;
       background: var(--white);
     }
-    .field-input:focus { border-color: var(--green); }
-    .field-input::placeholder { color: #c0c0c0; font-size: 17px; }
-
-    .check-row {
+    .loc-option.selected {
+      border-color: var(--naver);
+      background: var(--naver-bg);
+    }
+    .loc-option-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray-3);
+      margin-bottom: 8px;
+    }
+    .loc-option.selected .loc-option-label { color: var(--naver-dark); }
+    .room-input-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+    .room-input-row input {
+      border: none;
+      outline: none;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--gray-1);
+      background: transparent;
       width: 100%;
-      max-width: 420px;
+      min-width: 0;
+    }
+    .room-input-row input::placeholder { color: var(--gray-4); font-size: 16px; font-weight: 400; }
+    .room-suffix { font-size: 15px; color: var(--gray-3); flex-shrink: 0; }
+    .lounge-check-area {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 16px 18px;
-      background: var(--green-light);
-      border-radius: 14px;
-      cursor: pointer;
-      user-select: none;
+      gap: 8px;
+      padding-top: 2px;
     }
-    .check-row input[type="checkbox"] {
-      width: 28px;
-      height: 28px;
+    .custom-check {
+      width: 22px; height: 22px;
+      border: 2px solid var(--gray-4);
+      border-radius: 5px;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
-      accent-color: var(--green);
-      cursor: pointer;
+      transition: border-color .2s, background .2s;
     }
-    .check-label { font-size: 20px; font-weight: 600; }
+    .loc-option.selected .custom-check {
+      border-color: var(--naver);
+      background: var(--naver);
+    }
+    .lounge-text { font-size: 17px; font-weight: 600; color: var(--gray-1); }
+    .loc-or {
+      font-size: 12px;
+      color: var(--gray-4);
+      font-weight: 600;
+      flex-shrink: 0;
+      padding: 0 2px;
+      align-self: center;
+    }
+
+    /* 리뷰 상태 카드 */
+    .review-grid {
+      display: flex;
+      gap: 10px;
+    }
+    .review-option {
+      flex: 1;
+      border: 1.5px solid var(--gray-5);
+      border-radius: 12px;
+      padding: 14px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: border-color .2s, background .2s;
+      background: var(--white);
+    }
+    .review-option.selected {
+      border-color: var(--naver);
+      background: var(--naver-bg);
+    }
+    .review-check-box {
+      width: 22px; height: 22px;
+      border: 2px solid var(--gray-4);
+      border-radius: 5px;
+      background: var(--white);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      transition: border-color .2s, background .2s;
+    }
+    .review-option.selected .review-check-box {
+      border-color: var(--naver);
+      background: var(--naver);
+    }
+    .review-option-text { font-size: 14px; font-weight: 700; color: var(--gray-1); line-height: 1.3; }
+    .review-option:not(.selected) .review-option-text { color: var(--gray-3); }
+
+    /* 하단 버튼 영역 */
+    .inp-footer {
+      padding: 12px 16px 28px;
+      background: var(--white);
+      border-top: 1px solid var(--gray-5);
+      flex-shrink: 0;
+    }
+    .btn-submit {
+      width: 100%;
+      height: 58px;
+      background: var(--naver);
+      border: none;
+      border-radius: 14px;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+      cursor: pointer;
+      transition: background .15s, transform .1s, opacity .15s;
+    }
+    .btn-submit:active { background: var(--naver-dark); transform: scale(.97); }
+    .btn-submit.inactive {
+      background: var(--gray-5);
+      color: var(--gray-4);
+      cursor: default;
+    }
 
     .toast {
-      width: 100%;
-      max-width: 420px;
-      background: #FEF3C7;
-      border: 1px solid #F59E0B;
+      padding: 10px 14px;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
       border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 16px;
-      color: #92400E;
+      font-size: 13px;
+      color: #c2410c;
       display: none;
+      margin-bottom: 10px;
+      text-align: center;
     }
     .toast.show { display: block; }
-
-    .brand-note {
-      font-size: 13px;
-      color: #bbb;
-      text-align: center;
-      padding-top: 4px;
-    }
 
     /* ══════════════════════════════════════
        SCREEN 3 — 완료
     ══════════════════════════════════════ */
-    #s-complete {
-      background: var(--green-light);
-      cursor: pointer;
-    }
-    #s-complete .body {
-      flex: 1;
+    #s-complete { cursor: pointer; }
+
+    .complete-top {
+      background: var(--naver);
+      flex-shrink: 0;
+      height: 42%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 22px;
-      padding: 32px 24px;
-      text-align: center;
+      gap: 10px;
+      padding: 0 24px;
     }
+    .complete-emoji { font-size: 48px; }
     .complete-title {
-      font-size: 52px;
+      font-size: 32px;
       font-weight: 900;
-      color: var(--green);
+      color: var(--white);
+      letter-spacing: -0.5px;
     }
     .complete-sub {
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--gray);
-      line-height: 1.5;
+      font-size: 16px;
+      color: rgba(255,255,255,.85);
+      text-align: center;
+      line-height: 1.6;
+    }
+    .complete-bottom {
+      flex: 1;
+      background: var(--white);
+      border-radius: 24px 24px 0 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      padding: 24px 24px 32px;
+    }
+    .qr-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-2);
     }
     .qr-box {
       background: var(--white);
-      padding: 16px;
+      border: 1px solid var(--gray-5);
       border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(0,0,0,.12);
+      padding: 16px;
+      box-shadow: 0 2px 16px rgba(0,0,0,.06);
     }
-    .qr-hint { font-size: 18px; color: var(--gray); }
-    .countdown-txt { font-size: 15px; color: var(--gray-mid); }
+    .qr-hint {
+      font-size: 12px;
+      color: var(--gray-3);
+      text-align: center;
+      line-height: 1.6;
+    }
+    .countdown-badge {
+      background: var(--gray-6);
+      border-radius: 20px;
+      padding: 8px 20px;
+      font-size: 13px;
+      color: var(--gray-3);
+    }
+    .countdown-badge span {
+      color: var(--naver);
+      font-weight: 700;
+    }
 
     /* ══════════════════════════════════════
-       POPUP — 중복 참여
+       POPUP — 중복
     ══════════════════════════════════════ */
     .overlay {
       display: none;
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(0,0,0,.5);
       z-index: 200;
       align-items: center;
@@ -294,205 +431,170 @@
       padding: 36px 28px;
       text-align: center;
       width: min(360px, 90vw);
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+      display: flex; flex-direction: column; gap: 16px;
     }
-    .popup-emoji { font-size: 52px; }
-    .popup-msg { font-size: 22px; font-weight: 700; line-height: 1.55; color: var(--gray); }
+    .popup-emoji { font-size: 48px; }
+    .popup-msg { font-size: 20px; font-weight: 700; line-height: 1.55; color: var(--gray-1); }
     .btn-popup {
-      background: var(--green);
+      background: var(--naver);
       color: var(--white);
       border: none;
       border-radius: 12px;
-      height: 60px;
-      font-size: 20px;
+      height: 56px;
+      font-size: 18px;
       font-weight: 700;
       cursor: pointer;
       width: 100%;
     }
 
     /* ══════════════════════════════════════
-       SCREEN — 관리자
+       SCREEN — 관리자 (변경 없음)
     ══════════════════════════════════════ */
-    #s-admin .body { flex: 1; overflow-y: auto; padding: 20px; }
-
-    .pin-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100%;
-      gap: 20px;
-    }
-    .pin-title { font-size: 22px; font-weight: 600; }
-    .pin-input {
-      font-size: 36px;
-      letter-spacing: 14px;
-      text-align: center;
-      border: 2px solid var(--gray-light);
-      border-radius: 14px;
+    #s-admin { background: var(--white); }
+    .admin-header {
+      background: var(--gray-1);
       padding: 16px 20px;
-      width: 200px;
-      outline: none;
-    }
-    .pin-input:focus { border-color: var(--green); }
-    .pin-error { font-size: 16px; color: #dc2626; min-height: 22px; }
-
-    .dash-toolbar {
       display: flex;
+      justify-content: space-between;
       align-items: center;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
+      flex-shrink: 0;
     }
-    .dash-toolbar input[type="date"] {
-      padding: 10px 14px;
-      border: 2px solid var(--gray-light);
-      border-radius: 10px;
-      font-size: 16px;
-      outline: none;
-    }
-    .dash-toolbar input[type="date"]:focus { border-color: var(--green); }
-    .btn-outline {
-      background: var(--white);
-      color: var(--green);
-      border: 2px solid var(--green);
-      border-radius: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: 600;
+    .admin-header-title { color: var(--white); font-size: 16px; font-weight: 700; }
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.4);
+      color: rgba(255,255,255,.85);
+      padding: 7px 16px;
+      border-radius: 8px;
+      font-size: 13px;
       cursor: pointer;
     }
-    .btn-filled {
-      background: var(--green);
-      color: var(--white);
-      border: none;
-      border-radius: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
+    #s-admin .body { flex: 1; overflow-y: auto; padding: 20px; }
+    .pin-wrap {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; height: 100%; gap: 20px;
     }
-    .dash-count { font-size: 16px; font-weight: 600; color: var(--green); margin-bottom: 12px; }
+    .pin-title { font-size: 20px; font-weight: 600; }
+    .pin-input {
+      font-size: 32px; letter-spacing: 14px; text-align: center;
+      border: 2px solid var(--gray-5); border-radius: 14px;
+      padding: 16px 20px; width: 200px; outline: none;
+    }
+    .pin-input:focus { border-color: var(--naver); }
+    .pin-error { font-size: 15px; color: var(--red); min-height: 22px; }
+    .dash-toolbar { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .dash-toolbar input[type="date"] { padding: 10px 14px; border: 1px solid var(--gray-5); border-radius: 10px; font-size: 15px; outline: none; }
+    .btn-outline { background: var(--white); color: var(--naver); border: 1.5px solid var(--naver); border-radius: 10px; padding: 10px 20px; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .btn-filled { background: var(--naver); color: var(--white); border: none; border-radius: 10px; padding: 10px 20px; font-size: 15px; font-weight: 600; cursor: pointer; }
+    .dash-count { font-size: 15px; font-weight: 600; color: var(--naver); margin-bottom: 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    thead th { background: var(--gray-1); color: var(--white); padding: 10px 12px; text-align: left; }
+    tbody td { padding: 10px 12px; border-bottom: 1px solid var(--gray-5); }
+    tbody tr:nth-child(even) { background: var(--gray-6); }
 
-    table { width: 100%; border-collapse: collapse; font-size: 15px; }
-    thead th { background: var(--green); color: var(--white); padding: 10px 12px; text-align: left; }
-    tbody td { padding: 10px 12px; border-bottom: 1px solid #eee; }
-    tbody tr:nth-child(even) { background: #f8f8f8; }
+    /* 체크 SVG */
+    .check-svg { display: none; }
+    .selected .check-svg { display: block; }
   </style>
 </head>
 <body>
 
 <!-- ════════ SCREEN 1: 시작 ════════ -->
 <div id="s-start" class="screen active">
-  <div class="header">
-    <span class="header-title">🏆 DREAM CATCHERS</span>
-    <button class="btn-ghost" onclick="App.goAdmin()">관리자</button>
-  </div>
-  <div class="body">
-    <div class="start-headline">
-      네이버 리뷰 쓰고<br>
-      <em>시원하게 충전하세요!</em> 🎁
-    </div>
-
-    <div class="drink-wrap">
-      <!--
-        실제 이미지로 교체:
-        <img src="/static/vita1000.png" style="width:100%;height:100%;object-fit:contain">
-      -->
-      <svg class="can-svg" viewBox="0 0 180 220" xmlns="http://www.w3.org/2000/svg">
-        <rect x="40" y="18" width="100" height="184" rx="22" fill="#2D5A3D"/>
-        <rect x="46" y="24" width="88" height="172" rx="16" fill="#1E5631"/>
-        <rect x="46" y="70" width="88" height="80" rx="4" fill="#D6EAD8" opacity=".12"/>
-        <text x="90" y="90"  text-anchor="middle" fill="white" font-size="13" font-weight="600" opacity=".9">VITA</text>
-        <text x="90" y="118" text-anchor="middle" fill="white" font-size="34" font-weight="900">1000</text>
-        <text x="90" y="138" text-anchor="middle" fill="#D6EAD8" font-size="11" opacity=".8">비타민C 음료</text>
-        <ellipse cx="90" cy="18"  rx="50" ry="9"  fill="#1a4a2a"/>
-        <ellipse cx="90" cy="202" rx="50" ry="9"  fill="#1a4a2a"/>
-        <ellipse cx="90" cy="10"  rx="30" ry="6"  fill="#404040"/>
+  <img class="bg-img" src="/static/vita_drink.jpg" alt="비타민 드링크 이벤트"
+       onerror="this.style.display='none'">
+  <div class="start-card">
+    <div class="start-handle"></div>
+    <div class="start-title">드림캐쳐스 강남도곡점</div>
+    <button class="btn-naver" onclick="App.goInput()">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="5" fill="white"/>
+        <path d="M13.4 12.52L10.48 8H8v8h2.6V11.48L13.52 16H16V8h-2.6v4.52z" fill="#03C75A"/>
       </svg>
-    </div>
-
-    <button class="btn-primary" id="btn-start" onclick="App.goInput()">✅ 참여하기</button>
-
-    <div class="quota-wrap">
-      <div class="quota-bar-bg">
-        <div class="quota-bar-fill" id="quota-bar" style="width:0%"></div>
-      </div>
-      <div class="quota-txt">매일 선착순 — 남은 인원 <strong id="quota-txt">확인 중...</strong></div>
-    </div>
-
-    <div class="sold-out-msg" id="sold-out-msg" style="display:none">
-      오늘 이벤트가 마감됐어요!<br>내일 꼭 오세요 👋
-    </div>
-
-    <div class="daily-note">하루에 한 번 참여 가능합니다</div>
+      참여신청 (하루 1회)
+    </button>
   </div>
 </div>
 
 
 <!-- ════════ SCREEN 2: 입력 ════════ -->
 <div id="s-input" class="screen">
-  <div class="header">
-    <span class="header-title">📝 정보 입력</span>
+
+  <div class="inp-body">
+
+    <!-- 네이버 아이디 -->
+    <div class="inp-card" id="card-naver">
+      <div class="card-label">아이디 입력 <span class="req">(필수)</span></div>
+      <div class="naver-input-row">
+        <input id="f-naver" type="text" autocomplete="off" autocapitalize="none"
+               placeholder="아이디 입력" oninput="App.onInput()" onfocus="App.onNaverFocus(true)" onblur="App.onNaverFocus(false)">
+        <span class="naver-suffix">@naver.com</span>
+      </div>
+    </div>
+
+    <!-- 위치 선택 -->
+    <div class="inp-card">
+      <div class="card-label">위치</div>
+      <div class="location-grid">
+
+        <div class="loc-option" id="loc-resident" onclick="App.selectResident()">
+          <div class="room-input-row">
+            <input id="f-room" type="text" inputmode="numeric" pattern="[0-9]*"
+                   placeholder="호수" oninput="App.onRoomInput()" onclick="event.stopPropagation()">
+            <span class="room-suffix">호</span>
+          </div>
+        </div>
+
+        <div class="loc-or">또는</div>
+
+        <div class="loc-option" id="loc-lounge" onclick="App.selectLounge()">
+          <div class="lounge-check-area">
+            <div class="custom-check">
+              <svg class="check-svg" width="13" height="10" viewBox="0 0 13 10" fill="none">
+                <path d="M1 5l4 4L12 1" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="lounge-text">제휴라운지</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+
   </div>
-  <div class="body">
-    <p class="input-hint">해당하는 항목을 입력하세요</p>
 
-    <div class="field">
-      <label class="field-label" for="f-room">🏢 호실 번호 <span class="tag">(입주사)</span></label>
-      <input class="field-input" id="f-room" type="text" inputmode="numeric" pattern="[0-9]*"
-             placeholder="예) 301" oninput="App.onInput()">
-    </div>
-
-    <div class="field">
-      <label class="field-label" for="f-name">🙋 성함 앞 2글자 <span class="tag">(라운지)</span></label>
-      <input class="field-input" id="f-name" type="text" maxlength="2"
-             placeholder="예) 김이" oninput="App.onInput()">
-    </div>
-
-    <div class="field">
-      <label class="field-label" for="f-naver">🌐 네이버 아이디 <span class="tag">(선택)</span></label>
-      <input class="field-input" id="f-naver" type="text"
-             placeholder="예) dreamcatch123" oninput="App.onInput()">
-    </div>
-
-    <label class="check-row" for="f-check">
-      <input type="checkbox" id="f-check" onchange="App.onInput()">
-      <span class="check-label">리뷰를 쓰겠습니다</span>
-    </label>
-
-    <div class="toast" id="toast">위의 체크박스를 먼저 눌러주세요 ☝️</div>
-
-    <button class="btn-primary inactive" id="btn-submit" onclick="App.submit()">
-      확인 →
-    </button>
-
-    <p class="brand-note">드림캐쳐스는 여러분의 신뢰를 믿습니다</p>
+  <div class="inp-footer">
+    <div class="toast" id="toast">위 항목을 모두 입력/선택해 주세요 ☝️</div>
+    <button class="btn-submit inactive" id="btn-submit" onclick="App.submit()">확인 →</button>
   </div>
+
 </div>
 
 
 <!-- ════════ SCREEN 3: 완료 ════════ -->
-<div id="s-complete" class="screen">
-  <div class="body">
-    <div class="complete-title">🎉 감사합니다!</div>
-    <div class="complete-sub">냉장고에서 비타1000을<br>꺼내 드세요 🥤</div>
+<div id="s-complete" class="screen" onclick="App.goStart()">
 
+  <div class="complete-top">
+    <div class="complete-emoji">🎉</div>
+    <div class="complete-title">감사합니다!</div>
+    <div class="complete-sub">냉장고에서 비타1000을<br>꺼내 드세요 🥤</div>
+  </div>
+
+  <div class="complete-bottom">
+    <div class="qr-label">📱 QR코드로 네이버 리뷰 바로가기</div>
     <div class="qr-box">
       {% if qr_exists %}
-        <img src="/static/qr_naver.png" width="220" height="220" alt="네이버 리뷰 QR">
+        <img src="/static/qr_naver.png" width="200" height="200" alt="네이버 리뷰 QR">
       {% else %}
-        <div id="qr-js" style="width:220px;height:220px;display:flex;align-items:center;justify-content:center;background:#f0f0f0;border-radius:8px;font-size:13px;color:#888;text-align:center;padding:16px;">
-          QR 이미지를<br>생성하는 중...
+        <div style="width:200px;height:200px;display:flex;align-items:center;justify-content:center;background:#f0f0f0;border-radius:8px;font-size:13px;color:#888;text-align:center;padding:16px;">
+          QR 이미지<br>생성 중...
         </div>
       {% endif %}
     </div>
-
-    <div class="qr-hint">📱 QR코드를 찍으면 네이버 리뷰 페이지로 이동해요</div>
-    <div class="countdown-txt">화면을 터치하거나 <span id="timer">30</span>초 후 돌아갑니다</div>
+    <div class="countdown-badge">화면을 터치하거나 <span id="timer">30</span>초 후 돌아갑니다</div>
   </div>
+
 </div>
 
 
@@ -508,13 +610,11 @@
 
 <!-- ════════ SCREEN: 관리자 ════════ -->
 <div id="s-admin" class="screen">
-  <div class="header">
-    <span class="header-title">🔒 관리자</span>
+  <div class="admin-header">
+    <span class="admin-header-title">🔒 관리자</span>
     <button class="btn-ghost" onclick="App.goStart()">← 나가기</button>
   </div>
   <div class="body">
-
-    <!-- PIN -->
     <div class="pin-wrap" id="pin-wrap">
       <div class="pin-title">PIN을 입력하세요</div>
       <input class="pin-input" id="pin-input" type="password"
@@ -522,8 +622,6 @@
              oninput="if(this.value.length===4) App.verifyPin(this.value)">
       <div class="pin-error" id="pin-error"></div>
     </div>
-
-    <!-- Dashboard -->
     <div id="dashboard" style="display:none">
       <div class="dash-toolbar">
         <input type="date" id="dash-date">
@@ -533,12 +631,11 @@
       <div class="dash-count" id="dash-count"></div>
       <table>
         <thead>
-          <tr><th>시간</th><th>호실</th><th>성함</th><th>네이버ID</th></tr>
+          <tr><th>시간</th><th>네이버ID</th><th>위치</th><th>리뷰상태</th></tr>
         </thead>
         <tbody id="dash-tbody"></tbody>
       </table>
     </div>
-
   </div>
 </div>
 
@@ -547,34 +644,8 @@
 const App = (() => {
   let countdownId  = null;
   let inactivityId = null;
-
-  // ── status / quota ────────────────────────────────────────────────────────
-
-  async function loadStatus() {
-    try {
-      const res  = await fetch('/api/status');
-      const data = await res.json();
-      const pct  = Math.round((data.count / data.limit) * 100);
-
-      document.getElementById('quota-bar').style.width = pct + '%';
-      document.getElementById('quota-txt').textContent =
-        `${data.remaining}/${data.limit}명`;
-
-      const btn     = document.getElementById('btn-start');
-      const soldMsg = document.getElementById('sold-out-msg');
-      if (data.sold_out) {
-        btn.classList.add('inactive');
-        btn.onclick = null;
-        soldMsg.style.display = 'block';
-      } else {
-        btn.classList.remove('inactive');
-        btn.onclick = goInput;
-        soldMsg.style.display = 'none';
-      }
-    } catch { /* 네트워크 오류 시 조용히 무시 */ }
-  }
-
-  // ── helpers ──────────────────────────────────────────────────────────────
+  let locationMode = null; // 'resident' | 'lounge'
+  let reviewStatus = null; // 'done' | 'planned'
 
   function show(id) {
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -582,8 +653,15 @@ const App = (() => {
   }
 
   function resetFields() {
-    ['f-room','f-name','f-naver'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('f-check').checked = false;
+    document.getElementById('f-naver').value = '';
+    document.getElementById('f-room').value  = '';
+    locationMode = null;
+    reviewStatus = null;
+    document.getElementById('loc-resident').classList.remove('selected');
+    document.getElementById('loc-lounge').classList.remove('selected');
+    document.getElementById('rc-done').classList.remove('selected');
+    document.getElementById('rc-planned').classList.remove('selected');
+    document.getElementById('card-naver').classList.remove('focused');
     document.getElementById('btn-submit').classList.add('inactive');
     document.getElementById('toast').classList.remove('show');
   }
@@ -593,20 +671,24 @@ const App = (() => {
     clearTimeout(inactivityId);
   }
 
-  // ── inactivity (input screen) ─────────────────────────────────────────────
-
   function resetInactivity() {
     clearTimeout(inactivityId);
     inactivityId = setTimeout(goStart, 30_000);
   }
 
-  // ── navigation ────────────────────────────────────────────────────────────
+  function checkReady() {
+    const naverId = document.getElementById('f-naver').value.trim();
+    const room    = document.getElementById('f-room').value.trim();
+    const ready   = naverId && locationMode && (locationMode === 'lounge' || room);
+    document.getElementById('btn-submit').classList.toggle('inactive', !ready);
+    return ready;
+  }
 
+  // ── navigation ──
   function goStart() {
     clearTimers();
     resetFields();
     show('s-start');
-    loadStatus();
   }
 
   function goInput() {
@@ -614,13 +696,11 @@ const App = (() => {
     resetInactivity();
     document.getElementById('s-input').addEventListener('touchstart', resetInactivity, { passive: true });
     document.getElementById('s-input').addEventListener('mousedown', resetInactivity);
+    document.getElementById('f-naver').focus();
   }
 
   function goComplete() {
     clearTimeout(inactivityId);
-    const el = document.getElementById('s-complete');
-    el.addEventListener('click', goStart, { once: true });
-    el.addEventListener('touchstart', goStart, { once: true, passive: true });
     show('s-complete');
     startCountdown(30);
   }
@@ -636,8 +716,7 @@ const App = (() => {
     setTimeout(() => document.getElementById('pin-input').focus(), 120);
   }
 
-  // ── countdown ─────────────────────────────────────────────────────────────
-
+  // ── countdown ──
   function startCountdown(secs) {
     let n = secs;
     document.getElementById('timer').textContent = n;
@@ -649,30 +728,58 @@ const App = (() => {
     }, 1000);
   }
 
-  // ── input screen ──────────────────────────────────────────────────────────
+  // ── input handlers ──
+  function onNaverFocus(focused) {
+    document.getElementById('card-naver').classList.toggle('focused', focused);
+  }
 
   function onInput() {
     resetInactivity();
-    const hasField =
-      document.getElementById('f-room').value.trim()  ||
-      document.getElementById('f-name').value.trim()  ||
-      document.getElementById('f-naver').value.trim();
-    const checked = document.getElementById('f-check').checked;
-    const btn = document.getElementById('btn-submit');
-    if (hasField && checked) btn.classList.remove('inactive');
-    else                      btn.classList.add('inactive');
+    checkReady();
     document.getElementById('toast').classList.remove('show');
+  }
+
+  function selectResident() {
+    locationMode = 'resident';
+    document.getElementById('loc-resident').classList.add('selected');
+    document.getElementById('loc-lounge').classList.remove('selected');
+    document.getElementById('f-room').focus();
+    resetInactivity();
+    checkReady();
+  }
+
+  function selectLounge() {
+    locationMode = 'lounge';
+    document.getElementById('loc-lounge').classList.add('selected');
+    document.getElementById('loc-resident').classList.remove('selected');
+    document.getElementById('f-room').value = '';
+    resetInactivity();
+    checkReady();
+  }
+
+  function onRoomInput() {
+    resetInactivity();
+    if (document.getElementById('f-room').value.trim()) {
+      locationMode = 'resident';
+      document.getElementById('loc-resident').classList.add('selected');
+      document.getElementById('loc-lounge').classList.remove('selected');
+    }
+    checkReady();
+  }
+
+  function onReviewStatus(which) {
+    resetInactivity();
+    reviewStatus = which;
+    document.getElementById('rc-done').classList.toggle('selected', which === 'done');
+    document.getElementById('rc-planned').classList.toggle('selected', which === 'planned');
+    checkReady();
   }
 
   async function submit() {
     const btn = document.getElementById('btn-submit');
     if (btn.classList.contains('inactive')) {
-      const checked = document.getElementById('f-check').checked;
-      if (!checked) {
-        const toast = document.getElementById('toast');
-        toast.classList.add('show');
-        setTimeout(() => toast.classList.remove('show'), 3000);
-      }
+      document.getElementById('toast').classList.add('show');
+      setTimeout(() => document.getElementById('toast').classList.remove('show'), 3000);
       return;
     }
 
@@ -680,15 +787,15 @@ const App = (() => {
     btn.classList.add('inactive');
 
     const body = {
-      room_number: document.getElementById('f-room').value.trim(),
-      name_prefix: document.getElementById('f-name').value.trim(),
-      naver_id:    document.getElementById('f-naver').value.trim(),
+      naver_id:      document.getElementById('f-naver').value.trim(),
+      room_number:   document.getElementById('f-room').value.trim() || null,
+      location_type: locationMode === 'lounge' ? 'lounge' : 'resident',
+      review_status: null,
     };
 
     try {
       const res  = await fetch('/api/participate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       });
       const data = await res.json();
@@ -716,12 +823,10 @@ const App = (() => {
     goStart();
   }
 
-  // ── admin ─────────────────────────────────────────────────────────────────
-
+  // ── admin ──
   async function verifyPin(pin) {
-    const res  = await fetch('/api/admin/verify', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch('/api/admin/verify', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pin }),
     });
     if (res.ok) {
@@ -739,28 +844,30 @@ const App = (() => {
     const res = await fetch(`/api/admin/records?date=${d}`);
     if (!res.ok) return;
     const rows = await res.json();
-
     document.getElementById('dash-count').textContent = `${d}  참여 ${rows.length}건`;
-
+    const locLabel = t => t === 'lounge' ? '라운지' : (t ? '입주사' : '—');
+    const revLabel = t => t === 'completed' ? '작성완료' : (t === 'planned' ? '작성예정' : '—');
     document.getElementById('dash-tbody').innerHTML = rows.length
       ? rows.map(r => `
           <tr>
             <td>${(r.participated_at||'').slice(11,16)}</td>
-            <td>${r.room_number||'—'}</td>
-            <td>${r.name_prefix||'—'}</td>
             <td>${r.naver_id||'—'}</td>
+            <td>${locLabel(r.location_type)}${r.room_number ? ' '+r.room_number+'호' : ''}</td>
+            <td>${revLabel(r.review_status)}</td>
           </tr>`).join('')
       : '<tr><td colspan="4" style="text-align:center;color:#aaa;padding:24px">참여 기록 없음</td></tr>';
   }
 
-  function exportCSV() {
-    window.location.href = '/api/admin/export';
-  }
+  function exportCSV() { window.location.href = '/api/admin/export'; }
 
-  // ── public API ────────────────────────────────────────────────────────────
-  loadStatus();
-  return { goStart, goInput, goComplete, goAdmin, onInput, submit, closePopup, verifyPin, loadRecords, exportCSV };
+  return { goStart, goInput, goComplete, goAdmin, onNaverFocus, onInput,
+           selectResident, selectLounge, onRoomInput, onReviewStatus,
+           submit, closePopup, verifyPin, loadRecords, exportCSV };
 })();
+
+{% if start_admin %}
+document.addEventListener('DOMContentLoaded', () => App.goAdmin());
+{% endif %}
 </script>
 </body>
 </html>
