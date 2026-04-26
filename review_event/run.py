@@ -10,6 +10,7 @@ app.secret_key = os.environ.get("SECRET_KEY", "dc-review-secret-2024")
 
 DB_PATH = os.path.join(os.path.dirname(__file__), "data", "reviews.db")
 ADMIN_PIN = os.environ.get("ADMIN_PIN", "1234")
+DAILY_LIMIT = int(os.environ.get("DAILY_LIMIT", "10"))
 
 
 def get_db():
@@ -74,6 +75,22 @@ def generate_assets():
 
 
 # ── Routes ────────────────────────────────────────────────────────────────────
+
+@app.route("/api/status")
+def status():
+    today = date.today().isoformat()
+    conn = get_db()
+    count = conn.execute(
+        "SELECT COUNT(*) FROM participations WHERE date(participated_at)=?", (today,)
+    ).fetchone()[0]
+    conn.close()
+    return jsonify({
+        "count": count,
+        "limit": DAILY_LIMIT,
+        "remaining": max(0, DAILY_LIMIT - count),
+        "sold_out": count >= DAILY_LIMIT,
+    })
+
 
 @app.route("/")
 def index():

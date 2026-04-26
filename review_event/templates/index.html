@@ -112,6 +112,37 @@
       font-size: 16px;
       color: var(--gray-mid);
     }
+    .quota-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .quota-bar-bg {
+      width: 260px;
+      height: 12px;
+      background: var(--gray-light);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .quota-bar-fill {
+      height: 100%;
+      background: var(--green);
+      border-radius: 6px;
+      transition: width .4s;
+    }
+    .quota-txt {
+      font-size: 15px;
+      color: var(--gray-mid);
+    }
+    .quota-txt strong { color: var(--green); }
+    .sold-out-msg {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--green-dark);
+      text-align: center;
+      line-height: 1.6;
+    }
 
     /* ══════════════════════════════════════
        SCREEN 2 — 입력
@@ -383,7 +414,19 @@
       </svg>
     </div>
 
-    <button class="btn-primary" onclick="App.goInput()">✅ 참여하기</button>
+    <button class="btn-primary" id="btn-start" onclick="App.goInput()">✅ 참여하기</button>
+
+    <div class="quota-wrap">
+      <div class="quota-bar-bg">
+        <div class="quota-bar-fill" id="quota-bar" style="width:0%"></div>
+      </div>
+      <div class="quota-txt">매일 선착순 — 남은 인원 <strong id="quota-txt">확인 중...</strong></div>
+    </div>
+
+    <div class="sold-out-msg" id="sold-out-msg" style="display:none">
+      오늘 이벤트가 마감됐어요!<br>내일 꼭 오세요 👋
+    </div>
+
     <div class="daily-note">하루에 한 번 참여 가능합니다</div>
   </div>
 </div>
@@ -432,7 +475,7 @@
 
 
 <!-- ════════ SCREEN 3: 완료 ════════ -->
-<div id="s-complete" class="screen" onclick="App.goStart()">
+<div id="s-complete" class="screen">
   <div class="body">
     <div class="complete-title">🎉 감사합니다!</div>
     <div class="complete-sub">냉장고에서 비타1000을<br>꺼내 드세요 🥤</div>
@@ -505,6 +548,32 @@ const App = (() => {
   let countdownId  = null;
   let inactivityId = null;
 
+  // ── status / quota ────────────────────────────────────────────────────────
+
+  async function loadStatus() {
+    try {
+      const res  = await fetch('/api/status');
+      const data = await res.json();
+      const pct  = Math.round((data.count / data.limit) * 100);
+
+      document.getElementById('quota-bar').style.width = pct + '%';
+      document.getElementById('quota-txt').textContent =
+        `${data.remaining}/${data.limit}명`;
+
+      const btn     = document.getElementById('btn-start');
+      const soldMsg = document.getElementById('sold-out-msg');
+      if (data.sold_out) {
+        btn.classList.add('inactive');
+        btn.onclick = null;
+        soldMsg.style.display = 'block';
+      } else {
+        btn.classList.remove('inactive');
+        btn.onclick = goInput;
+        soldMsg.style.display = 'none';
+      }
+    } catch { /* 네트워크 오류 시 조용히 무시 */ }
+  }
+
   // ── helpers ──────────────────────────────────────────────────────────────
 
   function show(id) {
@@ -537,6 +606,7 @@ const App = (() => {
     clearTimers();
     resetFields();
     show('s-start');
+    loadStatus();
   }
 
   function goInput() {
@@ -548,6 +618,9 @@ const App = (() => {
 
   function goComplete() {
     clearTimeout(inactivityId);
+    const el = document.getElementById('s-complete');
+    el.addEventListener('click', goStart, { once: true });
+    el.addEventListener('touchstart', goStart, { once: true, passive: true });
     show('s-complete');
     startCountdown(30);
   }
@@ -685,6 +758,7 @@ const App = (() => {
   }
 
   // ── public API ────────────────────────────────────────────────────────────
+  loadStatus();
   return { goStart, goInput, goComplete, goAdmin, onInput, submit, closePopup, verifyPin, loadRecords, exportCSV };
 })();
 </script>
