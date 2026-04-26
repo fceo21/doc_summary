@@ -44,7 +44,7 @@
     }
     #s-start .bg-img {
       position: absolute;
-      inset: 0;
+      top: 0; left: 0; right: 0;
       width: 100%;
       height: 65%;
       object-fit: cover;
@@ -106,6 +106,19 @@
       font-size: 12px;
       color: var(--gray-4);
       text-align: center;
+    }
+    .quota-row {
+      font-size: 13px;
+      color: var(--gray-3);
+      text-align: center;
+    }
+    .quota-row strong { color: var(--naver); font-weight: 700; }
+    .sold-out-msg {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--naver-dark);
+      text-align: center;
+      line-height: 1.6;
     }
 
     /* ══════════════════════════════════════
@@ -506,13 +519,15 @@
   <div class="start-card">
     <div class="start-handle"></div>
     <div class="start-title">드림캐쳐스 강남도곡점</div>
-    <button class="btn-naver" onclick="App.goInput()">
+    <button class="btn-naver" id="btn-start" onclick="App.goInput()">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
         <rect width="24" height="24" rx="5" fill="white"/>
         <path d="M13.4 12.52L10.48 8H8v8h2.6V11.48L13.52 16H16V8h-2.6v4.52z" fill="#03C75A"/>
       </svg>
       참여신청 (하루 1회)
     </button>
+    <div class="quota-row" id="quota-row">매일 선착순 · 남은 인원 <strong id="quota-txt">확인 중...</strong></div>
+    <div class="sold-out-msg" id="sold-out-msg" style="display:none">오늘 마감됐어요!<br>내일 꼭 오세요 👋</div>
   </div>
 </div>
 
@@ -573,7 +588,7 @@
 
 
 <!-- ════════ SCREEN 3: 완료 ════════ -->
-<div id="s-complete" class="screen" onclick="App.goStart()">
+<div id="s-complete" class="screen">
 
   <div class="complete-top">
     <div class="complete-emoji">🎉</div>
@@ -684,11 +699,31 @@ const App = (() => {
     return ready;
   }
 
+  // ── quota ──
+  async function loadStatus() {
+    try {
+      const data = await (await fetch('/api/status')).json();
+      document.getElementById('quota-txt').textContent = `${data.remaining}/${data.limit}명`;
+      const btn = document.getElementById('btn-start');
+      const soldMsg = document.getElementById('sold-out-msg');
+      if (data.sold_out) {
+        btn.style.opacity = '0.4';
+        btn.onclick = null;
+        soldMsg.style.display = 'block';
+      } else {
+        btn.style.opacity = '';
+        btn.onclick = goInput;
+        soldMsg.style.display = 'none';
+      }
+    } catch { /* 무시 */ }
+  }
+
   // ── navigation ──
   function goStart() {
     clearTimers();
     resetFields();
     show('s-start');
+    loadStatus();
   }
 
   function goInput() {
@@ -701,6 +736,9 @@ const App = (() => {
 
   function goComplete() {
     clearTimeout(inactivityId);
+    const el = document.getElementById('s-complete');
+    el.addEventListener('click', goStart, { once: true });
+    el.addEventListener('touchstart', goStart, { once: true, passive: true });
     show('s-complete');
     startCountdown(30);
   }
@@ -860,6 +898,7 @@ const App = (() => {
 
   function exportCSV() { window.location.href = '/api/admin/export'; }
 
+  loadStatus();
   return { goStart, goInput, goComplete, goAdmin, onNaverFocus, onInput,
            selectResident, selectLounge, onRoomInput, onReviewStatus,
            submit, closePopup, verifyPin, loadRecords, exportCSV };
